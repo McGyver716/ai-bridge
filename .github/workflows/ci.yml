@@ -1,0 +1,53 @@
+name: AI Ops CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        pip install black isort flake8
+        chmod +x scripts/*.sh
+    
+    - name: Code formatting check
+      run: |
+        black --check --diff .
+        isort --check-only --diff .
+    
+    - name: Linting
+      run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+    
+    - name: Health check
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_OWNER: ${{ github.repository_owner }}
+        GH_REPO: ${{ github.event.repository.name }}
+      run: ./scripts/health_check.sh
+    
+    - name: GitHub integration smoke test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_OWNER: ${{ github.repository_owner }}
+        GH_REPO: ${{ github.event.repository.name }}
+      run: ./scripts/smoke_github_pr.sh
+    
+    - name: Upload artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: health-reports
+        path: reports/

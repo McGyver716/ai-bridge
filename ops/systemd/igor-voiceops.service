@@ -1,0 +1,26 @@
+[Unit]
+Description=IGOR VoiceOps AI Service
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+User=aaron
+Group=aaron
+WorkingDirectory=/home/aaron/igor-voiceops
+Environment=PATH=/home/aaron/my_venv/bin
+ExecStart=/home/aaron/my_venv/bin/python -m uvicorn app.main:app --host 0.0.0.0 --port 8080
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/home/aaron/igor-voiceops/data
+
+[Install]
+WantedBy=multi-user.target

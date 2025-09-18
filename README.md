@@ -1,94 +1,44 @@
-# 🌉 AI Bridge - Multi-AI Proxy Server
+# AI Ops Hardening Kit
 
-> **Deploy in 5 minutes** • Connect Claude, GPT, and Grok through one API
+Turn your AI prototype into production-grade infrastructure.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template)
+## What This Gives You
+- **Source of truth** repo structure and checklists
+- **GitHub Actions CI** with lint, health checks, artifact upload
+- **Branch/Tag workflow** with `gold` branch for last known-good
+- **Health + Smoke scripts** (systemd, HTTP, GitHub token validation)
+- **Systemd units** to keep services running on boot
+- **Pre-commit hooks** to prevent bad commits
+- **Release + rollback** commands via Makefile
 
-## 🚀 Quick Deploy
-
-1. **Clone and Install:**
-   ```bash
-   git clone https://github.com/your-username/ai-bridge
-   cd ai-bridge
-   npm install
-   cp .env.example .env
-   ```
-
-2. **Add Your API Keys to .env:**
-   ```env
-   OPENAI_API_KEY=sk-...
-   GROK_API_KEY=xai-...
-   CLAUDE_API_KEY=sk-ant-...
-   ```
-
-3. **Start Server:**
-   ```bash
-   npm start
-   ```
-
-4. **Test It:**
-   ```bash
-   curl "http://localhost:3000/ai-bridge?query=hello&ai=all"
-   ```
-
-## 🎯 API Usage
-
-### Single AI Query
-```
-GET /ai-bridge?query=Write a poem&ai=gpt
-```
-
-### Multi-AI Comparison
-```
-GET /ai-bridge?query=Explain quantum computing&ai=all
-```
-
-### Health Check
-```
-GET /health
-```
-
-## 📦 Response Format
-```json
-{
-  "success": true,
-  "query": "hello",
-  "ai": "all",
-  "responses": {
-    "gpt": "Hello! How can I help you today?",
-    "grok": "Hey there! What's up?",
-    "claude": "Hello! I'm here to assist you."
-  },
-  "timestamp": "2025-06-21T...",
-  "bridge_version": "1.0.0"
-}
-```
-
-## 🚀 Deployment Options
-
-### Railway (Recommended)
-1. Fork this repo
-2. Connect to Railway
-3. Add environment variables
-4. Deploy!
-
-### Vercel
-1. Fork this repo
-2. Import to Vercel
-3. Add environment variables
-4. Deploy!
-
-### Docker
+## Quickstart
 ```bash
-docker build -t ai-bridge .
-docker run -p 3000:3000 --env-file .env ai-bridge
+# 1. Extract into your repo root
+unzip ai-ops-hardening-kit.zip -d .
+
+# 2. Setup
+make setup
+cp .env.example .env  # Edit with your values
+
+# 3. First release
+make release VERSION=0.1.0
+make promote-gold TAG=v0.1.0
+
+# 4. Daily operations
+make health    # Check all services
+make smoke     # Verify GitHub integration
+make rollback  # Emergency rollback to gold
 ```
 
-## 🔧 Local Development
-```bash
-npm run dev  # Uses nodemon for auto-restart
+## File Structure
 ```
-
-## 🤝 Contributing
-
-Built for the Sage AI Assistant project. Issues and PRs welcome!
+├── Makefile                     # Core operations
+├── .github/workflows/ci.yml     # Continuous integration
+├── scripts/
+│   ├── health_check.sh         # System health validation
+│   ├── smoke_github_pr.sh      # GitHub PR capability test
+│   └── promote_to_gold.sh      # Release promotion
+├── ops/systemd/                # Service definitions
+├── CHECKLISTS/                 # Release & DR procedures
+└── .env.example               # Environment template
+```
