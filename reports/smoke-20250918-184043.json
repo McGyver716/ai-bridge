@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-09-18T18:40:44-06:00",
+  "tests": {
+    "github_auth": {
+      "status": "ERROR",
+      "details": "HTTP 401"
+    },
+    "repository_access": {
+      "status": "ERROR",
+      "details": "HTTP 404"
+    },
+    "branch_access": {
+      "status": "ERROR",
+      "details": "HTTP 404"
+    },
+    "gold_branch": {
+      "status": "WARNING",
+      "details": "Gold branch missing"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+# Sensitive zones require human review
+/scripts/ @McGyver716
+/ops/ @McGyver716
+/.github/ @McGyver716
+/Makefile @McGyver716
+/.env* @McGyver716
