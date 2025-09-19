@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-09-18T18:40:31-06:00",
+  "checks": {
+    "git_status": {
+      "status": "WARNING",
+      "details": "Uncommitted changes detected"
+    },
+    "environment": {
+      "status": "OK",
+      "details": "All required variables set"
+    },
+    "python": {
+      "status": "OK",
+      "details": "Python 3.12.3"
+    },
+    "python_packages": {
+      "status": "OK",
+      "details": "All required packages available"
+    },
+    "systemd_services": {
+      "status": "INFO",
+      "details": "igor-voiceops:not-found ai-github-manager:not-found "
+    },
+    "network": {
+      "status": "OK",
+      "details": "GitHub API reachable"
+    }
+  }
+}

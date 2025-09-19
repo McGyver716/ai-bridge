@@ -1,0 +1,21 @@
+name: AI PR Policy
+on: [pull_request]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Block oversized or risky changes
+        run: |
+          set -e
+          CHANGED=$(git diff --shortstat origin/${{ github.base_ref }}...HEAD | awk '{print $4}' || echo "0")
+          MAX=400
+          if [ "${CHANGED:-0}" -gt "$MAX" ]; then
+            echo "❌ Too big for auto-merge ($CHANGED lines). Max: $MAX"; exit 1
+          fi
+          if git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '(^ops/|^scripts/|^\.github/)' ; then
+            echo "❌ Critical paths touched. Require manual review."; exit 1
+          fi
+          echo "✅ PR size and scope acceptable for AI changes"
